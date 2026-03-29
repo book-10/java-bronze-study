@@ -556,5 +556,502 @@ const QUESTIONS = [
     choices: ["3", "7", "10", "4"],
     answer: 1,
     explanation: "Math.max(a, b)は2つの値のうち大きい方を返します。max(3, 7)は7を返します。"
+  },
+
+  // ==================== Javaの基本（追加） ====================
+  {
+    topic: "Javaの基本",
+    question: "Javaのコメントの書き方として正しくないものはどれですか？",
+    choices: [
+      "// 一行コメント",
+      "/* 複数行コメント */",
+      "/** Javadocコメント */",
+      "-- SQLスタイルコメント"
+    ],
+    answer: 3,
+    explanation: "Javaのコメントは // (一行)、/* */ (複数行)、/** */ (Javadoc) の3種類です。-- はSQLのコメント記法でJavaでは使えません。"
+  },
+  {
+    topic: "Javaの基本",
+    question: "パッケージ宣言はソースファイルのどこに書きますか？",
+    choices: [
+      "クラス宣言の直後",
+      "import文の後",
+      "ファイルの先頭（コメントを除く最初の文）",
+      "どこに書いても良い"
+    ],
+    answer: 2,
+    explanation: "package文はソースファイルの先頭（有効な文として最初）に書く必要があります。コメントは前に置けます。"
+  },
+  {
+    topic: "Javaの基本",
+    question: "次のうちJavaの識別子として有効なものはどれですか？",
+    choices: ["2myVar", "_myVar", "my-Var", "class"],
+    answer: 1,
+    explanation: "識別子は数字で始めることができません。ハイフン(-)は使えません。classは予約語です。アンダースコア(_)や$で始めることは可能です。"
+  },
+  {
+    topic: "Javaの基本",
+    question: "System.out.println() と System.out.print() の違いはどれですか？",
+    choices: [
+      "println()は整数のみ出力できる",
+      "println()は出力後に改行を追加する",
+      "print()の方が高速",
+      "違いはない"
+    ],
+    answer: 1,
+    explanation: "println()は出力後に改行（\\n）を追加します。print()は改行を追加しません。"
+  },
+
+  // ==================== データ型と変数（追加） ====================
+  {
+    topic: "データ型と変数",
+    question: "次のコードの出力はどれですか？\n\nbyte b = 127;\nb++;\nSystem.out.println(b);",
+    choices: ["127", "128", "-128", "コンパイルエラー"],
+    answer: 2,
+    explanation: "byteの最大値は127です。127++でオーバーフローし、最小値の-128に戻ります（整数のオーバーフロー）。"
+  },
+  {
+    topic: "データ型と変数",
+    question: "float型リテラルの正しい書き方はどれですか？",
+    choices: ["float f = 3.14;", "float f = 3.14f;", "float f = 3.14d;", "float f = (float)3;"],
+    answer: 1,
+    explanation: "小数点リテラルはデフォルトでdouble型です。float型として扱うには末尾にfまたはFを付けます。float f = 3.14; はコンパイルエラーになります。"
+  },
+  {
+    topic: "データ型と変数",
+    question: "int型からdouble型への代入はどうなりますか？",
+    choices: [
+      "コンパイルエラーになる",
+      "実行時エラーになる",
+      "暗黙的に型変換（拡大変換）される",
+      "データが失われる"
+    ],
+    answer: 2,
+    explanation: "小さい型から大きい型への変換（拡大変換）は自動的に行われます。int→double, int→long, float→doubleなどが該当します。"
+  },
+  {
+    topic: "データ型と変数",
+    question: "次のコードはコンパイルできますか？\n\ndouble d = 3.14;\nint i = d;",
+    choices: [
+      "できる（自動変換される）",
+      "できない（明示的なキャストが必要）",
+      "できる（精度が落ちるが動く）",
+      "実行時エラーになる"
+    ],
+    answer: 1,
+    explanation: "大きい型から小さい型への変換（縮小変換）は自動では行えません。(int)d のように明示的なキャストが必要です。"
+  },
+
+  // ==================== 演算子（追加） ====================
+  {
+    topic: "演算子",
+    question: "次の式の結果はどれですか？\n\nint x = 10;\nx += 5;\nSystem.out.println(x);",
+    choices: ["5", "10", "15", "50"],
+    answer: 2,
+    explanation: "+= は複合代入演算子です。x += 5 は x = x + 5 と同じ意味で、10 + 5 = 15 になります。"
+  },
+  {
+    topic: "演算子",
+    question: "三項演算子の正しい構文はどれですか？",
+    choices: [
+      "条件 ? 偽の値 : 真の値",
+      "条件 ? 真の値 : 偽の値",
+      "条件 : 真の値 ? 偽の値",
+      "if 条件 ? 真の値 : 偽の値"
+    ],
+    answer: 1,
+    explanation: "三項演算子は 条件 ? 真の時の値 : 偽の時の値 という構文です。例：int max = (a > b) ? a : b;"
+  },
+  {
+    topic: "演算子",
+    question: "instanceof 演算子の役割はどれですか？",
+    choices: [
+      "オブジェクトのサイズを返す",
+      "オブジェクトが特定のクラスのインスタンスかどうかを判定する",
+      "新しいインスタンスを生成する",
+      "クラス名を文字列で返す"
+    ],
+    answer: 1,
+    explanation: "instanceofはオブジェクトが指定したクラス（またはそのサブクラス）のインスタンスかどうかをbooleanで返します。例：if (obj instanceof String)"
+  },
+
+  // ==================== 制御フロー（追加） ====================
+  {
+    topic: "制御フロー",
+    question: "拡張for文（for-each文）の正しい構文はどれですか？",
+    choices: [
+      "for (int i : array.length)",
+      "for (int item : array)",
+      "foreach (int item in array)",
+      "for each (item in array)"
+    ],
+    answer: 1,
+    explanation: "拡張for文は for (型 変数名 : 配列またはIterable) という構文です。配列やコレクションの全要素を順に処理できます。"
+  },
+  {
+    topic: "制御フロー",
+    question: "次のコードで何回「Hello」が表示されますか？\n\nint i = 0;\ndo {\n  System.out.println(\"Hello\");\n  i++;\n} while (i < 0);",
+    choices: ["0回", "1回", "無限回", "コンパイルエラー"],
+    answer: 1,
+    explanation: "do-whileは最初に処理を実行してから条件を評価します。i=0で「Hello」が1回表示され、その後 i<0 (0<0) がfalseなのでループが終了します。"
+  },
+  {
+    topic: "制御フロー",
+    question: "breakとcontinueの違いはどれですか？",
+    choices: [
+      "breakはループ全体を終了し、continueは現在のイテレーションをスキップする",
+      "continueはループ全体を終了し、breakは現在のイテレーションをスキップする",
+      "どちらも同じ動作をする",
+      "breakはif文でのみ使える"
+    ],
+    answer: 0,
+    explanation: "breakはループ（またはswitch）全体を終了します。continueは現在のイテレーションの残りをスキップして次のイテレーションへ進みます。"
+  },
+  {
+    topic: "制御フロー",
+    question: "次の無限ループとして正しいものはどれですか？",
+    choices: [
+      "for (int i=0; i<10; i--) {}",
+      "while (true) {}",
+      "for (;;) {}",
+      "B と C の両方"
+    ],
+    answer: 3,
+    explanation: "while(true) と for(;;) はどちらも条件が常にtrueの無限ループです。どちらも正しい書き方です。"
+  },
+
+  // ==================== 配列（追加） ====================
+  {
+    topic: "配列",
+    question: "配列をコピーするのに使えるメソッドはどれですか？",
+    choices: [
+      "array.copy()",
+      "System.arraycopy()",
+      "Array.duplicate()",
+      "array.clone() は使えない"
+    ],
+    answer: 1,
+    explanation: "System.arraycopy()は配列の要素をコピーするメソッドです。Arrays.copyOf()やclone()も使えます。"
+  },
+  {
+    topic: "配列",
+    question: "int型配列の初期値はどれですか？",
+    choices: ["null", "1", "0", "コンパイルエラー"],
+    answer: 2,
+    explanation: "数値型配列（int, double等）の要素は0で初期化されます。boolean型はfalse、参照型（Stringなど）はnullです。"
+  },
+  {
+    topic: "配列",
+    question: "次のコードの出力はどれですか？\n\nint[] a = {1, 2, 3};\nint[] b = a;\nb[0] = 99;\nSystem.out.println(a[0]);",
+    choices: ["1", "99", "0", "コンパイルエラー"],
+    answer: 1,
+    explanation: "配列は参照型です。b = a は同じ配列を指す参照のコピーです。b[0]を変更すると、aが指す同じ配列も変わるため、a[0]は99になります。"
+  },
+
+  // ==================== クラスとオブジェクト（追加） ====================
+  {
+    topic: "クラスとオブジェクト",
+    question: "デフォルトコンストラクタはいつ自動生成されますか？",
+    choices: [
+      "常に自動生成される",
+      "コンストラクタが1つも定義されていない場合",
+      "クラスにpublicがついている場合",
+      "staticクラスの場合"
+    ],
+    answer: 1,
+    explanation: "コンストラクタを1つも定義しない場合、コンパイラが引数なしのデフォルトコンストラクタを自動生成します。1つでもコンストラクタを定義すると自動生成されません。"
+  },
+  {
+    topic: "クラスとオブジェクト",
+    question: "finalフィールドの説明として正しいのはどれですか？",
+    choices: [
+      "サブクラスからアクセスできない",
+      "一度値を設定したら変更できない（定数）",
+      "staticである必要がある",
+      "メソッド内でのみ宣言できる"
+    ],
+    answer: 1,
+    explanation: "finalフィールドは一度初期化したら再代入できません。定数の宣言によく使われます（例：final int MAX = 100;）。"
+  },
+  {
+    topic: "クラスとオブジェクト",
+    question: "次のうちオブジェクトの等価性（内容の一致）を比較する正しい方法はどれですか？",
+    choices: [
+      "== 演算子を使う",
+      "equals()メソッドをオーバーライドして使う",
+      "= 演算子を使う",
+      "same()メソッドを使う"
+    ],
+    answer: 1,
+    explanation: "== はオブジェクトの参照（アドレス）を比較します。内容（状態）の一致を比較するにはequals()メソッドを適切にオーバーライドして使います。"
+  },
+  {
+    topic: "クラスとオブジェクト",
+    question: "static初期化ブロックはいつ実行されますか？",
+    choices: [
+      "オブジェクト生成時",
+      "クラスが初めてロードされたとき",
+      "mainメソッド終了後",
+      "毎回メソッドが呼ばれるたびに"
+    ],
+    answer: 1,
+    explanation: "static初期化ブロック（static { }）はクラスが初めてJVMにロードされたときに1回だけ実行されます。staticフィールドの初期化などに使います。"
+  },
+
+  // ==================== メソッド（追加） ====================
+  {
+    topic: "メソッド",
+    question: "可変長引数（varargs）の正しい宣言はどれですか？",
+    choices: [
+      "void method(int[] args)",
+      "void method(int... args)",
+      "void method(int* args)",
+      "void method(args int...)"
+    ],
+    answer: 1,
+    explanation: "可変長引数は型の後に ... をつけて宣言します。呼び出し時は任意個の引数を渡せ、メソッド内では配列として扱われます。"
+  },
+  {
+    topic: "メソッド",
+    question: "メソッドのシグネチャとはどれですか？",
+    choices: [
+      "戻り値の型のみ",
+      "メソッド名と引数リスト（型・数・順序）の組み合わせ",
+      "アクセス修飾子とメソッド名",
+      "メソッド名のみ"
+    ],
+    answer: 1,
+    explanation: "メソッドシグネチャはメソッド名と引数リスト（型・数・順序）の組み合わせです。戻り値の型はシグネチャに含まれません。オーバーロードはシグネチャで区別されます。"
+  },
+  {
+    topic: "メソッド",
+    question: "再帰メソッドで必ず必要なものはどれですか？",
+    choices: [
+      "staticキーワード",
+      "ループ文",
+      "終了条件（ベースケース）",
+      "配列の引数"
+    ],
+    answer: 2,
+    explanation: "再帰メソッドは自分自身を呼び出します。終了条件（ベースケース）がないと無限に呼び出され、StackOverflowErrorが発生します。"
+  },
+
+  // ==================== カプセル化（追加） ====================
+  {
+    topic: "カプセル化",
+    question: "Getterメソッドの命名規則として一般的なものはどれですか？",
+    choices: [
+      "fetchXxx()",
+      "getXxx()",
+      "readXxx()",
+      "returnXxx()"
+    ],
+    answer: 1,
+    explanation: "Javaの慣習ではgetterは getXxx()、setterは setXxx() という名前にします。boolean型の場合は isXxx() という名前にすることも多いです。"
+  },
+  {
+    topic: "カプセル化",
+    question: "修飾子なし（default/package-private）のメンバーにアクセスできるのはどれですか？",
+    choices: [
+      "どこからでもアクセスできる",
+      "同じパッケージ内のクラスのみ",
+      "サブクラスのみ",
+      "同じクラス内のみ"
+    ],
+    answer: 1,
+    explanation: "アクセス修飾子を省略（デフォルト/package-private）すると、同じパッケージ内のクラスからのみアクセスできます。"
+  },
+
+  // ==================== 継承（追加） ====================
+  {
+    topic: "継承",
+    question: "すべてのJavaクラスが暗黙的に継承しているクラスはどれですか？",
+    choices: ["Base", "Root", "Object", "Super"],
+    answer: 2,
+    explanation: "Javaのすべてのクラスは暗黙的にjava.lang.Objectクラスを継承しています。equals()、hashCode()、toString()などのメソッドはObjectクラスで定義されています。"
+  },
+  {
+    topic: "継承",
+    question: "finalクラスを継承しようとするとどうなりますか？",
+    choices: [
+      "正常にコンパイルされる",
+      "コンパイルエラーになる",
+      "実行時エラーになる",
+      "警告が表示される"
+    ],
+    answer: 1,
+    explanation: "finalが付いたクラスは継承できません。Stringクラスはfinalクラスの代表例です。コンパイルエラーになります。"
+  },
+  {
+    topic: "継承",
+    question: "ポリモーフィズム（多態性）の説明として正しいのはどれですか？",
+    choices: [
+      "1つのクラスが複数のクラスを継承できること",
+      "親クラスの参照変数でサブクラスのオブジェクトを扱えること",
+      "メソッドを複数定義できること",
+      "クラスを複数のパッケージに属させること"
+    ],
+    answer: 1,
+    explanation: "ポリモーフィズムとは、親クラス型の変数でサブクラスのオブジェクトを参照し、オーバーライドされたメソッドが実行時の実際の型に応じて呼ばれる仕組みです。"
+  },
+  {
+    topic: "継承",
+    question: "次のコードで呼ばれるのはどちらのshow()ですか？\n\nAnimal a = new Dog();\na.show();",
+    choices: [
+      "Animalクラスのshow()",
+      "Dogクラスのshow()（オーバーライドしている場合）",
+      "コンパイルエラー",
+      "両方呼ばれる"
+    ],
+    answer: 1,
+    explanation: "Javaは動的ディスパッチ（実行時ポリモーフィズム）を採用しています。参照型がAnimalでも、実際のオブジェクトがDogなので、DogのオーバーライドされたメソッドがJVM実行時に選ばれます。"
+  },
+
+  // ==================== インタフェース・抽象クラス（追加） ====================
+  {
+    topic: "インタフェース・抽象クラス",
+    question: "抽象メソッドとはどのようなメソッドですか？",
+    choices: [
+      "privateメソッド",
+      "本体（実装）を持たないメソッド",
+      "staticメソッド",
+      "戻り値がvoidのメソッド"
+    ],
+    answer: 1,
+    explanation: "抽象メソッド（abstractメソッド）はメソッドの宣言のみで本体{}を持ちません。サブクラスで必ずオーバーライドして実装する必要があります。"
+  },
+  {
+    topic: "インタフェース・抽象クラス",
+    question: "Java 8で追加されたインタフェースの機能はどれですか？",
+    choices: [
+      "フィールドを持てるようになった",
+      "defaultメソッドで実装を持てるようになった",
+      "インスタンス化できるようになった",
+      "privateメソッドが廃止された"
+    ],
+    answer: 1,
+    explanation: "Java 8からインタフェースにdefaultキーワードを使って実装付きメソッドを定義できるようになりました。既存の実装クラスへの互換性を保ちながら機能追加ができます。"
+  },
+  {
+    topic: "インタフェース・抽象クラス",
+    question: "抽象クラスとインタフェースの違いとして正しいのはどれですか？",
+    choices: [
+      "抽象クラスはインスタンス化できるが、インタフェースはできない",
+      "抽象クラスはコンストラクタを持てるが、インタフェースは持てない",
+      "インタフェースはstaticフィールドを持てないが、抽象クラスは持てる",
+      "抽象クラスは複数継承できる"
+    ],
+    answer: 1,
+    explanation: "抽象クラスはコンストラクタ、インスタンスフィールド、具体的なメソッドを持てます。インタフェースはコンストラクタを持てず、フィールドはpublic static finalのみです。"
+  },
+
+  // ==================== 例外処理（追加） ====================
+  {
+    topic: "例外処理",
+    question: "複数のcatchブロックを書く場合の注意点はどれですか？",
+    choices: [
+      "順序は関係ない",
+      "サブクラスの例外を先に、スーパークラスの例外を後に書く",
+      "スーパークラスの例外を先に書く",
+      "catchは1つしか書けない"
+    ],
+    answer: 1,
+    explanation: "スーパークラスの例外を先に書くと、サブクラスの例外もそこでキャッチされ、後のcatchブロックが到達不能コードになりコンパイルエラーになります。サブクラス→スーパークラスの順に書きます。"
+  },
+  {
+    topic: "例外処理",
+    question: "try-with-resources文の目的はどれですか？",
+    choices: [
+      "複数のcatchを1行で書く",
+      "AutoCloseableなリソースを自動的にclose()する",
+      "例外を無視する",
+      "例外メッセージを変換する"
+    ],
+    answer: 1,
+    explanation: "try-with-resources（Java 7以降）はAutoCloseableを実装したリソース（ファイル等）をtryブロック終了時に自動でclose()します。finallyでclose()を書く手間が省けます。"
+  },
+  {
+    topic: "例外処理",
+    question: "RuntimeExceptionのサブクラスでないのはどれですか？",
+    choices: [
+      "NullPointerException",
+      "ArrayIndexOutOfBoundsException",
+      "IOException",
+      "ClassCastException"
+    ],
+    answer: 2,
+    explanation: "IOExceptionはExceptionの直接サブクラスで検査例外（checked exception）です。NullPointerException、ArrayIndexOutOfBoundsException、ClassCastExceptionはRuntimeExceptionのサブクラスです。"
+  },
+  {
+    topic: "例外処理",
+    question: "例外クラスを自作する場合、通常何を継承しますか？",
+    choices: [
+      "Throwable",
+      "Error",
+      "Exception または RuntimeException",
+      "Object"
+    ],
+    answer: 2,
+    explanation: "カスタム例外はExceptionまたはRuntimeExceptionを継承して作ります。検査例外にしたい場合はException、非検査例外にしたい場合はRuntimeExceptionを継承します。"
+  },
+
+  // ==================== Java API（追加） ====================
+  {
+    topic: "Java API",
+    question: "StringBuilderをStringの代わりに使う主な理由はどれですか？",
+    choices: [
+      "StringBuilderはnullを扱える",
+      "文字列を繰り返し変更する場合にStringより効率的",
+      "StringBuilderはスレッドセーフ",
+      "StringBuilderはプリミティブ型"
+    ],
+    answer: 1,
+    explanation: "Stringはイミュータブルなので変更のたびに新オブジェクトを生成します。StringBuilderは可変長で同じオブジェクトを変更できるため、繰り返し文字列連結する場面では効率的です。"
+  },
+  {
+    topic: "Java API",
+    question: "String.valueOf(123) の結果はどれですか？",
+    choices: ["123（int）", "\"123\"（String）", "123.0（double）", "コンパイルエラー"],
+    answer: 1,
+    explanation: "String.valueOf()は引数をString型に変換します。valueOf(123)は\"123\"という文字列を返します。"
+  },
+  {
+    topic: "Java API",
+    question: "Integer.parseInt(\"42\") の結果はどれですか？",
+    choices: ["\"42\"（String）", "42（int）", "42.0（double）", "コンパイルエラー"],
+    answer: 1,
+    explanation: "Integer.parseInt()は数値を表す文字列をint型に変換します。数値以外の文字列を渡すとNumberFormatExceptionがスローされます。"
+  },
+  {
+    topic: "Java API",
+    question: "ArrayListのadd()メソッドの説明として正しいのはどれですか？",
+    choices: [
+      "リストの先頭に要素を追加する",
+      "リストの末尾に要素を追加する（デフォルト）",
+      "指定した要素を削除する",
+      "リストのサイズを返す"
+    ],
+    answer: 1,
+    explanation: "add(element)はリストの末尾に要素を追加します。add(index, element)とすると指定位置に挿入できます。"
+  },
+  {
+    topic: "Java API",
+    question: "文字列を大文字に変換するメソッドはどれですか？",
+    choices: ["toUpper()", "toUpperCase()", "upper()", "capitalize()"],
+    answer: 1,
+    explanation: "StringクラスのtoUpperCase()メソッドで文字列を大文字に変換できます。小文字への変換はtoLowerCase()です。"
+  },
+  {
+    topic: "Java API",
+    question: "String.trim() メソッドの役割はどれですか？",
+    choices: [
+      "文字列を切り詰める（最大長を指定）",
+      "文字列の先頭と末尾の空白を除去する",
+      "文字列を整数に変換する",
+      "文字列を分割する"
+    ],
+    answer: 1,
+    explanation: "trim()は文字列の先頭と末尾にある空白（スペース、タブ等）を除去した新しいStringを返します。ユーザー入力のトリミングによく使われます。"
   }
 ];
