@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <rect width="192" height="192" rx="40" fill="#1a1a2e"/>
+  <text x="96" y="130" font-size="110" text-anchor="middle" font-family="Arial">☕</text>
+  <rect x="20" y="155" width="152" height="18" rx="9" fill="#4f8ef7" opacity="0.8"/>
+  <text x="96" y="168" font-size="12" text-anchor="middle" font-family="Arial" font-weight="bold" fill="white">JAVA BRONZE</text>
+</svg>

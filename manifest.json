@@ -1,0 +1,22 @@
+{
+  "name": "Java Bronze 学習アプリ",
+  "short_name": "Java Bronze",
+  "description": "Oracle認定Javaプログラマ ブロンズ 学習アプリ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f0f1a",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
