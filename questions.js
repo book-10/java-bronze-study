@@ -1053,5 +1053,688 @@ const QUESTIONS = [
     ],
     answer: 1,
     explanation: "trim()は文字列の先頭と末尾にある空白（スペース、タブ等）を除去した新しいStringを返します。ユーザー入力のトリミングによく使われます。"
+  },
+
+  // ==================== コード読み取り問題（出力を答える） ====================
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint a = 3, b = 4;\nSystem.out.println(a * b + 2);",
+    choices: ["18", "14", "12", "コンパイルエラー"],
+    answer: 1,
+    explanation: "演算子の優先順位により、* が + より先に評価されます。3 * 4 = 12、12 + 2 = 14 が出力されます。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nfor (int i = 1; i <= 5; i++) {\n  if (i % 2 == 0) System.out.print(i + \" \");\n}",
+    choices: ["1 3 5", "2 4", "1 2 3 4 5", "2 4 6"],
+    answer: 1,
+    explanation: "i % 2 == 0 は偶数を判定します。1〜5の中で偶数は2と4なので「2 4 」が出力されます。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint x = 0;\nfor (int i = 0; i < 4; i++) {\n  x += i;\n}\nSystem.out.println(x);",
+    choices: ["4", "6", "10", "0"],
+    answer: 1,
+    explanation: "i=0,1,2,3の順に加算します。0+1+2+3=6 が出力されます。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nString s = \"Java\";\nSystem.out.println(s.charAt(1));",
+    choices: ["J", "a", "v", "コンパイルエラー"],
+    answer: 1,
+    explanation: "charAt(1)はインデックス1の文字を返します。\"Java\"のインデックス0はJ、1はa、2はv、3はaです。よって'a'が出力されます。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint[] arr = {5, 3, 8, 1};\nint max = arr[0];\nfor (int v : arr) {\n  if (v > max) max = v;\n}\nSystem.out.println(max);",
+    choices: ["5", "1", "8", "3"],
+    answer: 2,
+    explanation: "配列の最大値を求めるコードです。5→3（更新なし）→8（8>5なので更新）→1（更新なし）で最終的にmax=8になります。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint i = 5;\nswitch (i) {\n  case 5:\n    System.out.print(\"A\");\n  case 6:\n    System.out.print(\"B\");\n    break;\n  case 7:\n    System.out.print(\"C\");\n}",
+    choices: ["A", "AB", "ABC", "B"],
+    answer: 1,
+    explanation: "case 5でマッチしますが、breakがないためfall-throughしてcase 6も実行されます。case 6にbreakがあるのでそこで終了。出力は「AB」です。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint a = 10;\nint b = a++;\nSystem.out.println(a + \" \" + b);",
+    choices: ["10 10", "11 10", "10 11", "11 11"],
+    answer: 1,
+    explanation: "a++は後置インクリメントです。まずaの値10がbに代入され、その後aが11になります。よって出力は「11 10」です。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nSystem.out.println(\"10\" + 2 + 3);",
+    choices: ["15", "1023", "\"10\" + 5", "コンパイルエラー"],
+    answer: 1,
+    explanation: "左から評価されます。\"10\" + 2 = \"102\"（文字列連結）、\"102\" + 3 = \"1023\" となります。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint n = 10;\nwhile (n > 0) {\n  System.out.print(n + \" \");\n  n -= 3;\n}",
+    choices: ["10 7 4 1", "10 7 4", "10 7 4 1 -2", "無限ループ"],
+    answer: 0,
+    explanation: "n=10→7→4→1→-2(条件false)。n>0の間ループするので10,7,4,1が出力され、n=-2で終了します。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nString s1 = \"Hello\";\nString s2 = \"Hello\";\nSystem.out.println(s1 == s2);",
+    choices: ["false", "true", "コンパイルエラー", "null"],
+    answer: 1,
+    explanation: "文字列リテラルは文字列プール（String Pool）に格納され、同じリテラルは同じオブジェクトを参照します。そのためs1==s2はtrueになります。newで生成した場合は異なります。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint x = 7;\nSystem.out.println(x > 5 ? \"big\" : \"small\");",
+    choices: ["big", "small", "true", "コンパイルエラー"],
+    answer: 0,
+    explanation: "三項演算子です。7 > 5 はtrueなので「big」が出力されます。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint[][] mat = new int[2][3];\nSystem.out.println(mat.length + \" \" + mat[0].length);",
+    choices: ["6 6", "2 3", "3 2", "2 6"],
+    answer: 1,
+    explanation: "mat.lengthは行数（2）、mat[0].lengthは列数（3）を返します。出力は「2 3」です。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\nint count = 0;\nfor (int i = 0; i < 10; i++) {\n  if (i % 3 == 0) count++;\n}\nSystem.out.println(count);",
+    choices: ["3", "4", "2", "10"],
+    answer: 1,
+    explanation: "0〜9の中で3の倍数は0, 3, 6, 9の4個です。0も3で割り切れる（0%3==0）ことに注意。countは4になります。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードは何をしますか？\n\nint n = 5;\nint result = 1;\nfor (int i = 1; i <= n; i++) {\n  result *= i;\n}\nSystem.out.println(result);",
+    choices: ["nの2乗（25）", "nの合計（15）", "nの階乗（120）", "nの平均"],
+    answer: 2,
+    explanation: "result に 1×2×3×4×5 を計算します。これは5の階乗（5! = 120）です。"
+  },
+  {
+    topic: "コード読み取り",
+    question: "次のコードの出力はどれですか？\n\ntry {\n  int[] a = new int[3];\n  a[5] = 10;\n  System.out.println(\"A\");\n} catch (ArrayIndexOutOfBoundsException e) {\n  System.out.println(\"B\");\n} finally {\n  System.out.println(\"C\");\n}",
+    choices: ["A", "B", "A\nC", "B\nC"],
+    answer: 3,
+    explanation: "a[5]でArrayIndexOutOfBoundsExceptionが発生しcatchに飛びます。\"B\"が出力され、さらにfinallyの\"C\"が必ず実行されます。出力は「B」「C」の2行です。"
+  },
+
+  // ==================== データ型と変数（発展） ====================
+  {
+    topic: "データ型と変数",
+    question: "次のうちラッパークラスの正しいペアはどれですか？",
+    choices: [
+      "int → Integer、char → Character、boolean → Boolean",
+      "int → Int、char → Char、boolean → Bool",
+      "int → IntClass、double → DoubleClass",
+      "byte → ByteWrapper、long → LongWrapper"
+    ],
+    answer: 0,
+    explanation: "プリミティブ型のラッパークラス：int→Integer, char→Character, boolean→Boolean, byte→Byte, short→Short, long→Long, float→Float, double→Double です。"
+  },
+  {
+    topic: "データ型と変数",
+    question: "オートボクシング（Auto Boxing）とはどれですか？",
+    choices: [
+      "プリミティブ型を自動的にラッパークラスのオブジェクトに変換する",
+      "ラッパークラスを自動的にプリミティブ型に変換する",
+      "int型をlong型に変換する",
+      "配列を自動的に生成する"
+    ],
+    answer: 0,
+    explanation: "オートボクシングはプリミティブ型→ラッパークラスへの自動変換です。例：Integer i = 42; （int→Integerに自動変換）。逆方向（Integer→int）はアンボクシングと呼びます。"
+  },
+  {
+    topic: "データ型と変数",
+    question: "次の変数宣言で初期値が与えられていないローカル変数を使用した場合はどうなりますか？\n\nvoid method() {\n  int x;\n  System.out.println(x);\n}",
+    choices: [
+      "0が出力される",
+      "nullが出力される",
+      "コンパイルエラーになる",
+      "実行時エラーになる"
+    ],
+    answer: 2,
+    explanation: "ローカル変数は初期化しないまま使用するとコンパイルエラーになります。インスタンス変数・クラス変数はデフォルト値（int→0など）に初期化されますが、ローカル変数は手動で初期化が必要です。"
+  },
+  {
+    topic: "データ型と変数",
+    question: "double型とfloat型の違いとして正しいのはどれですか？",
+    choices: [
+      "float型の方が精度が高い",
+      "double型の方が精度が高い（64ビット vs 32ビット）",
+      "どちらも同じ精度",
+      "float型は整数のみ扱える"
+    ],
+    answer: 1,
+    explanation: "double型は64ビット、float型は32ビットです。doubleの方が精度と範囲が大きいです。Javaの小数点リテラルのデフォルトはdouble型です。"
+  },
+
+  // ==================== 演算子（発展） ====================
+  {
+    topic: "演算子",
+    question: "次の式の結果はどれですか？\n\nboolean b = true || (10 / 0 > 0);",
+    choices: ["true", "false", "ArithmeticException", "コンパイルエラー"],
+    answer: 0,
+    explanation: "||（OR）は短絡評価（ショートサーキット）を行います。左辺がtrueであれば右辺は評価されません。そのため10/0のゼロ除算例外は発生せず、結果はtrueになります。"
+  },
+  {
+    topic: "演算子",
+    question: "ビット演算子 & と論理演算子 && の違いはどれですか？",
+    choices: [
+      "&&は短絡評価し、&は両辺を常に評価する",
+      "&は短絡評価し、&&は両辺を常に評価する",
+      "違いはない",
+      "&はint型のみに使える"
+    ],
+    answer: 0,
+    explanation: "&&（論理AND）は短絡評価で、左辺がfalseなら右辺を評価しません。&（ビットAND）は常に両辺を評価します。boolean型に&を使うことも可能ですが副作用のある式に注意が必要です。"
+  },
+  {
+    topic: "演算子",
+    question: "次のコードの出力はどれですか？\n\nint a = 5, b = 3;\nSystem.out.println(a > b ? a - b : b - a);",
+    choices: ["2", "-2", "8", "コンパイルエラー"],
+    answer: 0,
+    explanation: "5 > 3 はtrue なので、a - b = 5 - 3 = 2 が出力されます。"
+  },
+
+  // ==================== 制御フロー（発展） ====================
+  {
+    topic: "制御フロー",
+    question: "ラベル付きbreak文の説明として正しいのはどれですか？",
+    choices: [
+      "ラベルの付いた変数を削除する",
+      "指定したラベルのループを終了する（多重ループを一気に抜ける）",
+      "ラベルの付いたメソッドを呼ぶ",
+      "Javaにはラベルがない"
+    ],
+    answer: 1,
+    explanation: "ラベル付きbreakを使うと多重ループで外側のループを直接抜けられます。例：outer: for(...) { for(...) { break outer; } }"
+  },
+  {
+    topic: "制御フロー",
+    question: "次のコードの出力はどれですか？\n\nint i = 0;\nouter:\nwhile (i < 3) {\n  int j = 0;\n  while (j < 3) {\n    if (j == 1) break outer;\n    System.out.print(i + \"\" + j + \" \");\n    j++;\n  }\n  i++;\n}",
+    choices: ["00 01 02 10 11 12 20 21 22", "00", "00 10 20", "コンパイルエラー"],
+    answer: 1,
+    explanation: "i=0,j=0のとき「00」を出力し、j++でj=1になるとbreak outerでouterループを終了します。出力は「00 」のみです。"
+  },
+  {
+    topic: "制御フロー",
+    question: "switchのcase値として使えないものはどれですか？",
+    choices: [
+      "final int定数",
+      "char型リテラル",
+      "変数（int型）",
+      "String型リテラル"
+    ],
+    answer: 2,
+    explanation: "switchのcase値には定数（リテラルまたはfinal定数）のみ使えます。変数は実行時まで値が確定しないため使えません。コンパイルエラーになります。"
+  },
+
+  // ==================== 配列（発展） ====================
+  {
+    topic: "配列",
+    question: "Arrays.sort()を使って配列をソートした後の結果はどれですか？\n\nint[] a = {5, 2, 8, 1, 9};\nArrays.sort(a);\nSystem.out.println(a[0]);",
+    choices: ["5", "1", "9", "コンパイルエラー"],
+    answer: 1,
+    explanation: "Arrays.sort()は配列を昇順にソートします。ソート後は{1,2,5,8,9}となり、a[0]は1です。"
+  },
+  {
+    topic: "配列",
+    question: "Arrays.toString()の役割はどれですか？",
+    choices: [
+      "配列をソートする",
+      "配列の要素を文字列で表現する（例：[1, 2, 3]）",
+      "配列のサイズを文字列で返す",
+      "配列を別の配列にコピーする"
+    ],
+    answer: 1,
+    explanation: "Arrays.toString()は配列の全要素を「[1, 2, 3]」のような文字列に変換します。配列をそのまま直接System.out.printlnするとアドレスが表示されるため、内容確認にArrays.toString()を使います。"
+  },
+  {
+    topic: "配列",
+    question: "次のコードの出力はどれですか？\n\nString[] s = new String[3];\nSystem.out.println(s[0]);",
+    choices: ["\"\"（空文字）", "null", "0", "コンパイルエラー"],
+    answer: 1,
+    explanation: "参照型（String等）の配列要素はデフォルトでnullに初期化されます。s[0]はnullなので\"null\"と出力されます。"
+  },
+  {
+    topic: "配列",
+    question: "次の宣言のうちコンパイルエラーになるのはどれですか？",
+    choices: [
+      "int[] a = new int[0];",
+      "int[] b = new int[-1];",
+      "int[] c = {1, 2, 3};",
+      "int[] d = new int[100];"
+    ],
+    answer: 1,
+    explanation: "負のサイズで配列を生成しようとするとコンパイルは通りますが、実行時にNegativeArraySizeExceptionがスローされます。サイズ0の配列は有効です。"
+  },
+
+  // ==================== クラスとオブジェクト（発展） ====================
+  {
+    topic: "クラスとオブジェクト",
+    question: "ガベージコレクション（GC）の説明として正しいのはどれですか？",
+    choices: [
+      "プログラマが明示的にメモリを解放する仕組み",
+      "JVMが不要なオブジェクトのメモリを自動的に解放する仕組み",
+      "配列のサイズを自動的に拡張する仕組み",
+      "例外を自動的に処理する仕組み"
+    ],
+    answer: 1,
+    explanation: "Javaはガベージコレクタが参照されなくなったオブジェクトのメモリを自動解放します。C/C++のように手動でdelete/freeする必要がありません。"
+  },
+  {
+    topic: "クラスとオブジェクト",
+    question: "toString()メソッドをオーバーライドする目的はどれですか？",
+    choices: [
+      "オブジェクトを文字列に変換する際に意味のある内容を返すため",
+      "オブジェクトのコピーを作るため",
+      "オブジェクトを比較するため",
+      "メモリを解放するため"
+    ],
+    answer: 0,
+    explanation: "Object#toString()はデフォルトでクラス名@ハッシュコードを返します。オーバーライドすることでオブジェクトの状態をわかりやすく文字列表現できます。System.out.printlnはtoString()を内部で呼んでいます。"
+  },
+  {
+    topic: "クラスとオブジェクト",
+    question: "次のうちインスタンス変数とローカル変数の違いとして正しいのはどれですか？",
+    choices: [
+      "インスタンス変数はメソッド内で宣言し、ローカル変数はクラス内で宣言する",
+      "インスタンス変数はオブジェクトに属し自動初期化される。ローカル変数はメソッド内のみで使えデフォルト初期化されない",
+      "ローカル変数の方が長い期間メモリに残る",
+      "違いはない"
+    ],
+    answer: 1,
+    explanation: "インスタンス変数はオブジェクト生成時に作られ、デフォルト値で初期化されます（int→0等）。ローカル変数はメソッド実行中のみ存在し、使う前に明示的に初期化が必要です。"
+  },
+  {
+    topic: "クラスとオブジェクト",
+    question: "次のコードでNullPointerExceptionが発生するのはどこですか？\n\nString s = null;\nSystem.out.println(s.length());",
+    choices: [
+      "String s = null; の行",
+      "s.length() の呼び出し",
+      "System.out.println() の呼び出し",
+      "発生しない"
+    ],
+    answer: 1,
+    explanation: "nullの参照変数に対してメソッドを呼ぶとNullPointerExceptionが発生します。s.length()がその例です。null自体の代入はエラーにはなりません。"
+  },
+
+  // ==================== メソッド（発展） ====================
+  {
+    topic: "メソッド",
+    question: "Javaでオブジェクト（参照型）を引数として渡した場合の説明として正しいのはどれですか？",
+    choices: [
+      "参照のコピーが渡されるため、オブジェクト内部の変更は呼び出し元に反映される",
+      "オブジェクト全体がコピーされるため、変更は呼び出し元に反映されない",
+      "参照のコピーが渡されるが、変数に別オブジェクトを代入しても呼び出し元の変数は変わらない",
+      "AとC両方正しい"
+    ],
+    answer: 3,
+    explanation: "参照のコピーが渡されます。オブジェクトの内部状態（フィールド）を変更すると呼び出し元にも反映されます（Aは正しい）。ただし引数の変数に別のオブジェクトを代入しても呼び出し元の変数は変わりません（Cも正しい）。"
+  },
+  {
+    topic: "メソッド",
+    question: "次のコードのコンパイル結果はどうなりますか？\n\nvoid method(int a) { }\nvoid method(int b) { }",
+    choices: [
+      "正常にコンパイルされる",
+      "コンパイルエラー（同じシグネチャのオーバーロード不可）",
+      "実行時エラー",
+      "警告が出るが動く"
+    ],
+    answer: 1,
+    explanation: "メソッドシグネチャは「メソッド名＋引数の型・数・順序」です。引数の名前（a, b）はシグネチャに含まれないため、この2つは同じシグネチャとなりコンパイルエラーになります。"
+  },
+
+  // ==================== 継承（発展） ====================
+  {
+    topic: "継承",
+    question: "抽象クラスのサブクラスが全てのabstractメソッドを実装しない場合はどうなりますか？",
+    choices: [
+      "そのサブクラスも抽象クラスになる必要がある",
+      "コンパイルエラー",
+      "実行時エラー",
+      "未実装のメソッドは自動生成される"
+    ],
+    answer: 0,
+    explanation: "abstractメソッドを全て実装しないサブクラスは、自身もabstractクラスとして宣言する必要があります。そうでない場合はコンパイルエラーになります。"
+  },
+  {
+    topic: "継承",
+    question: "finalメソッドの説明として正しいのはどれですか？",
+    choices: [
+      "サブクラスでオーバーライドできない",
+      "インスタンス化できない",
+      "staticである必要がある",
+      "privateである必要がある"
+    ],
+    answer: 0,
+    explanation: "finalメソッドはサブクラスでオーバーライドできません。finalクラスはサブクラス化（継承）できません。finalフィールドは再代入できません。"
+  },
+  {
+    topic: "継承",
+    question: "コンストラクタは継承されますか？",
+    choices: [
+      "される",
+      "されない",
+      "publicのみ継承される",
+      "super()で継承できる"
+    ],
+    answer: 1,
+    explanation: "コンストラクタは継承されません。サブクラスのコンストラクタから親クラスのコンストラクタを呼ぶには super() を使います。"
+  },
+  {
+    topic: "継承",
+    question: "次のコードでエラーが発生する可能性があるのはどれですか？\n\nAnimal a = new Dog();\nDog d = (Dog) a;",
+    choices: [
+      "1行目でコンパイルエラー",
+      "2行目でコンパイルエラー",
+      "2行目でClassCastException（aが実際にDogでない場合）",
+      "エラーは発生しない"
+    ],
+    answer: 2,
+    explanation: "ダウンキャストは構文上問題ありませんが、実際のオブジェクトが指定の型でない場合、実行時にClassCastExceptionが発生します。instanceof で確認してからキャストするのが安全です。"
+  },
+  {
+    topic: "継承",
+    question: "抽象クラスにコンストラクタは定義できますか？",
+    choices: [
+      "定義できない",
+      "定義できる（サブクラスのコンストラクタからsuper()で呼ばれる）",
+      "staticコンストラクタのみ定義できる",
+      "publicコンストラクタのみ定義できる"
+    ],
+    answer: 1,
+    explanation: "抽象クラスにもコンストラクタを定義できます。直接インスタンス化はできませんが、サブクラスのコンストラクタからsuper()を通じて呼ばれます。"
+  },
+
+  // ==================== インタフェース・抽象クラス（発展） ====================
+  {
+    topic: "インタフェース・抽象クラス",
+    question: "クラスが複数のインタフェースを実装する際の正しい構文はどれですか？",
+    choices: [
+      "class A implements B, C { }",
+      "class A implements B implements C { }",
+      "class A extends B, C { }",
+      "class A uses B, C { }"
+    ],
+    answer: 0,
+    explanation: "複数のインタフェースをimplementsする場合はカンマで区切ります。例：class MyClass implements Runnable, Serializable { }"
+  },
+  {
+    topic: "インタフェース・抽象クラス",
+    question: "インタフェースのフィールドはどのような修飾子が自動的に付きますか？",
+    choices: [
+      "public only",
+      "public static final",
+      "private static",
+      "protected abstract"
+    ],
+    answer: 1,
+    explanation: "インタフェースのフィールドは暗黙的に public static final（定数）です。変更できない定数として扱われます。"
+  },
+  {
+    topic: "インタフェース・抽象クラス",
+    question: "次のうち抽象クラスをうまく使う場面として最適なのはどれですか？",
+    choices: [
+      "全く関係のないクラスに共通の動作を追加したい",
+      "複数の関連するクラスで共通の実装を共有し、一部を強制的にオーバーライドさせたい",
+      "Javaで多重継承を実現したい",
+      "staticメソッドだけを提供したい"
+    ],
+    answer: 1,
+    explanation: "抽象クラスは「is-a関係」のある関連クラスで共通実装を共有しつつ、サブクラスに特定メソッドの実装を強制させる際に適しています。無関係なクラスへの共通機能追加にはインタフェースが向いています。"
+  },
+
+  // ==================== 例外処理（発展） ====================
+  {
+    topic: "例外処理",
+    question: "throwとthrowsの違いとして正しいのはどれですか？",
+    choices: [
+      "throwはメソッド宣言に使い、throwsは例外をスローする文",
+      "throwは例外オブジェクトを実際にスローする文、throwsはメソッドが投げる可能性のある例外を宣言する",
+      "違いはない",
+      "throwsはRuntimeExceptionのみに使える"
+    ],
+    answer: 1,
+    explanation: "throw new Exception(); のようにthrowは実際に例外をスローします。void method() throws IOException { } のようにthrowsはメソッドがスローする可能性のある例外を宣言します。"
+  },
+  {
+    topic: "例外処理",
+    question: "catchブロックで例外のメッセージを取得するメソッドはどれですか？",
+    choices: [
+      "e.message()",
+      "e.getMessage()",
+      "e.toString()",
+      "e.getError()"
+    ],
+    answer: 1,
+    explanation: "getMessage()で例外メッセージを取得できます。toString()はクラス名とメッセージを含む文字列、printStackTrace()はスタックトレースを出力します。"
+  },
+  {
+    topic: "例外処理",
+    question: "Errorクラスについて正しい説明はどれですか？",
+    choices: [
+      "通常のアプリ内でcatchして回復すべき問題",
+      "JVM自体の重大な問題で通常キャッチすべきでない（OutOfMemoryError等）",
+      "RuntimeExceptionのサブクラス",
+      "必ずthrowsで宣言する必要がある"
+    ],
+    answer: 1,
+    explanation: "Errorは通常アプリで処理できないJVMレベルの問題（OutOfMemoryError, StackOverflowErrorなど）を表します。通常はキャッチすべきでなく、発生した場合はJVMが終了します。"
+  },
+
+  // ==================== Java API（発展） ====================
+  {
+    topic: "Java API",
+    question: "String.split(\",\")の動作はどれですか？",
+    choices: [
+      "文字列を1文字ずつ分割する",
+      "カンマで文字列を分割してString配列を返す",
+      "カンマを削除する",
+      "文字列を半分に分割する"
+    ],
+    answer: 1,
+    explanation: "split(区切り文字)は文字列を指定した区切り文字で分割してString配列を返します。例：\"a,b,c\".split(\",\") → [\"a\", \"b\", \"c\"]"
+  },
+  {
+    topic: "Java API",
+    question: "StringBuilder.append()の説明として正しいのはどれですか？",
+    choices: [
+      "新しいStringBuilderオブジェクトを返す",
+      "既存のStringBuilderに文字列を追加し、同じオブジェクトを返す",
+      "文字列の先頭に追加する",
+      "StringBuilder同士を比較する"
+    ],
+    answer: 1,
+    explanation: "StringBuilder.append()は呼び出したStringBuilderオブジェクト自身を変更して同じオブジェクトを返します（メソッドチェーン可能）。例：sb.append(\"Hello\").append(\" World\")"
+  },
+  {
+    topic: "Java API",
+    question: "次のコードの出力はどれですか？\n\nStringBuilder sb = new StringBuilder(\"Hello\");\nsb.reverse();\nSystem.out.println(sb);",
+    choices: ["Hello", "olleH", "コンパイルエラー", "H"],
+    answer: 1,
+    explanation: "StringBuilder.reverse()は文字列を逆順にします。\"Hello\" → \"olleH\" が出力されます。"
+  },
+  {
+    topic: "Java API",
+    question: "Collections（java.util.Collections）クラスの説明として正しいのはどれですか？",
+    choices: [
+      "コレクションを格納するクラス（インスタンス化できる）",
+      "コレクション操作のstaticメソッドを提供するユーティリティクラス",
+      "インタフェース",
+      "Listのサブクラス"
+    ],
+    answer: 1,
+    explanation: "java.util.Collectionsはsort(), reverse(), shuffle(), max(), min()などのstaticメソッドを提供するユーティリティクラスです。java.util.Collectionとは別物で注意が必要です。"
+  },
+  {
+    topic: "Java API",
+    question: "Math.abs(-5)の戻り値はどれですか？",
+    choices: ["-5", "5", "0", "コンパイルエラー"],
+    answer: 1,
+    explanation: "Math.abs()は絶対値を返します。abs(-5)は5を返します。"
+  },
+  {
+    topic: "Java API",
+    question: "String.indexOf(\"bc\")の説明として正しいのはどれですか？",
+    choices: [
+      "\"bc\"が文字列に含まれるかbooleanで返す",
+      "\"bc\"が最初に現れるインデックスを返す（見つからない場合は-1）",
+      "\"bc\"の文字数を返す",
+      "\"bc\"を削除した文字列を返す"
+    ],
+    answer: 1,
+    explanation: "indexOf()は指定した文字列が最初に現れる位置のインデックスを返します。見つからない場合は-1を返します。例：\"abcde\".indexOf(\"bc\") → 1"
+  },
+  {
+    topic: "Java API",
+    question: "次のコードの出力はどれですか？\n\nArrayList<Integer> list = new ArrayList<>();\nlist.add(10);\nlist.add(20);\nlist.add(30);\nlist.remove(1);\nSystem.out.println(list);",
+    choices: ["[10, 30]", "[20, 30]", "[10, 20]", "[10, 20, 30]"],
+    answer: 0,
+    explanation: "list.remove(1)はインデックス1の要素（20）を削除します。削除後はリストが[10, 30]になります。remove(Integer.valueOf(1))とすると値1を削除する動作になります。"
+  },
+
+  // ==================== Javaの基本（発展） ====================
+  {
+    topic: "Javaの基本",
+    question: "Javaのimport文の役割はどれですか？",
+    choices: [
+      "外部のJARファイルを読み込む",
+      "完全修飾クラス名（パッケージ名.クラス名）を省略して使えるようにする",
+      "クラスをコンパイルする",
+      "変数をインポートする"
+    ],
+    answer: 1,
+    explanation: "import文を使うことでクラスを完全修飾名（java.util.ArrayList）ではなく短い名前（ArrayList）で使えます。java.langパッケージは自動importされるためimport不要です。"
+  },
+  {
+    topic: "Javaの基本",
+    question: "JAR（Java ARchive）ファイルとは何ですか？",
+    choices: [
+      "Javaのソースコードのみをまとめたファイル",
+      "複数のclassファイルやリソースをまとめたZIP形式のアーカイブ",
+      "Javaの設定ファイル",
+      "JVMの実行ファイル"
+    ],
+    answer: 1,
+    explanation: "JARファイルは複数の.classファイルやリソース（画像等）をまとめたZIP形式のアーカイブです。ライブラリの配布や実行可能プログラムのパッケージングに使われます。"
+  },
+  {
+    topic: "Javaの基本",
+    question: "Javaのメモリ領域として、オブジェクトが格納されるのはどこですか？",
+    choices: ["スタック（Stack）", "ヒープ（Heap）", "メソッドエリア", "レジスタ"],
+    answer: 1,
+    explanation: "newで生成したオブジェクトはヒープ領域に格納されます。ローカル変数やメソッド呼び出しの情報はスタック領域に格納されます。"
+  },
+
+  // ==================== カプセル化（発展） ====================
+  {
+    topic: "カプセル化",
+    question: "JavaBeansの命名規則として正しいのはどれですか？",
+    choices: [
+      "フィールドはpublic、メソッドはprivate",
+      "フィールドはprivate、getter/setterはpublicでget/setプレフィックスをつける",
+      "全メンバーをstaticにする",
+      "クラス名は小文字で始める"
+    ],
+    answer: 1,
+    explanation: "JavaBeansの慣習：フィールドはprivate、getterはpublic ReturnType getXxx()、setterはpublic void setXxx(Type value)と定義します。boolean型のgetterはisXxx()も使われます。"
+  },
+
+  // ==================== 総合・応用問題 ====================
+  {
+    topic: "総合・応用",
+    question: "オブジェクト指向の3大要素として正しいのはどれですか？",
+    choices: [
+      "継承・ポリモーフィズム・ガベージコレクション",
+      "カプセル化・継承・ポリモーフィズム",
+      "抽象化・コンパイル・実行",
+      "クラス・オブジェクト・メソッド"
+    ],
+    answer: 1,
+    explanation: "オブジェクト指向の3大要素は「カプセル化（Encapsulation）」「継承（Inheritance）」「ポリモーフィズム（Polymorphism）」です。「抽象化（Abstraction）」を加えて4大要素とも言います。"
+  },
+  {
+    topic: "総合・応用",
+    question: "次のコードはコンパイルできますか？\n\nclass Parent {\n  private int value = 10;\n}\nclass Child extends Parent {\n  void show() {\n    System.out.println(value);\n  }\n}",
+    choices: [
+      "できる",
+      "できない（privateフィールドはサブクラスから直接アクセスできない）",
+      "できる（継承すれば使える）",
+      "実行時エラー"
+    ],
+    answer: 1,
+    explanation: "privateメンバーはそのクラス内からのみアクセスできます。Childクラスでvalueに直接アクセスするとコンパイルエラーになります。親クラスにgetValue()などのpublicメソッドを用意してアクセスします。"
+  },
+  {
+    topic: "総合・応用",
+    question: "次のうちJavaのコーディング規約として一般的なものはどれですか？",
+    choices: [
+      "クラス名は小文字始まり（例：myClass）",
+      "クラス名は大文字始まり（例：MyClass）、変数名はキャメルケース（例：myVar）",
+      "定数は小文字（例：maxvalue）",
+      "メソッド名は大文字始まり（例：MyMethod）"
+    ],
+    answer: 1,
+    explanation: "Javaの命名規約：クラス名はパスカルケース（大文字始まり）、変数・メソッド名はキャメルケース（小文字始まり）、定数はALL_UPPER_CASE（アンダースコア区切り大文字）です。"
+  },
+  {
+    topic: "総合・応用",
+    question: "次のコードの問題点はどれですか？\n\npublic class Main {\n  public static void main(String[] args) {\n    int[] arr = null;\n    System.out.println(arr.length);\n  }\n}",
+    choices: [
+      "コンパイルエラー（null代入不可）",
+      "実行時NullPointerException",
+      "0が出力される",
+      "問題ない"
+    ],
+    answer: 1,
+    explanation: "nullの参照に対してフィールドアクセス（arr.length）を行うとNullPointerExceptionが発生します。配列を使う前にnullチェックが必要です。"
+  },
+  {
+    topic: "総合・応用",
+    question: "スタックオーバーフロー（StackOverflowError）が発生する典型的な原因はどれですか？",
+    choices: [
+      "配列サイズが大きすぎる",
+      "終了条件のない（または誤った）再帰呼び出し",
+      "null参照へのアクセス",
+      "整数のオーバーフロー"
+    ],
+    answer: 1,
+    explanation: "無限に再帰呼び出しが続くとメソッドのスタックフレームが積み上がり、スタック領域が枯渇してStackOverflowErrorが発生します。再帰メソッドには必ず終了条件が必要です。"
+  },
+  {
+    topic: "総合・応用",
+    question: "次のコードの出力はどれですか？\n\nclass Animal {\n  String name = \"Animal\";\n  String sound() { return \"...\"; }\n}\nclass Dog extends Animal {\n  String name = \"Dog\";\n  String sound() { return \"Woof\"; }\n}\npublic class Main {\n  public static void main(String[] args) {\n    Animal a = new Dog();\n    System.out.println(a.name + \" \" + a.sound());\n  }\n}",
+    choices: ["Dog Woof", "Animal Woof", "Animal ...", "Dog ..."],
+    answer: 1,
+    explanation: "メソッドは実行時の実際の型（Dog）で解決されます（動的ディスパッチ）。フィールドは参照変数の型（Animal）で解決されます（フィールドは多態性の対象外）。よって name=Animal、sound()=Woofとなります。"
+  },
+  {
+    topic: "総合・応用",
+    question: "次のコードはコンパイルできますか？\n\ninterface Flyable {\n  void fly();\n}\ninterface Swimmable {\n  void swim();\n}\nclass Duck implements Flyable, Swimmable {\n  public void fly() { }\n  public void swim() { }\n}",
+    choices: [
+      "できない（インタフェースは1つしかimplements不可）",
+      "できる（複数implementsは合法）",
+      "できるが、flyかswimどちらかだけ実装すれば良い",
+      "コンパイルエラー（Duckクラスにコンストラクタが必要）"
+    ],
+    answer: 1,
+    explanation: "Javaでは複数のインタフェースをimplementsできます。インタフェースの全abstractメソッドを実装すればコンパイルできます。これは多重継承の弊害なしに多態性を実現できるJavaの特徴です。"
+  },
+  {
+    topic: "総合・応用",
+    question: "次の中でコンパイルエラーにならないのはどれですか？",
+    choices: [
+      "int x = 3.14;",
+      "double d = 3;",
+      "boolean b = 1;",
+      "char c = \"A\";"
+    ],
+    answer: 1,
+    explanation: "int → double は拡大変換なので自動的に変換されます。int 3 が double 3.0 になります。int = 3.14（縮小）、boolean = 1（型不一致）、char = \"A\"（ダブルクォートはString）はすべてコンパイルエラーです。"
   }
 ];
