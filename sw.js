@@ -1,8 +1,9 @@
-const CACHE_NAME = 'java-bronze-v1';
+const CACHE_NAME = 'java-bronze-v3';
 const FILES = [
   './',
   './index.html',
   './questions.js',
+  './notes.js',
   './manifest.json',
   './icon-192.svg'
 ];
@@ -20,7 +21,14 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // ネットワーク優先（オンライン時は常に最新を取得）
   e.respondWith(
-    caches.match(e.request).then(r => r || fetch(e.request))
+    fetch(e.request)
+      .then(res => {
+        const clone = res.clone();
+        caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
