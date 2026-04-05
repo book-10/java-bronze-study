@@ -1,11 +1,18 @@
-const CACHE_NAME = 'java-bronze-v3';
+const CACHE_NAME = 'java-bronze-v4';
 const FILES = [
   './',
   './index.html',
   './questions.js',
   './notes.js',
   './manifest.json',
-  './icon-192.svg'
+  './icon-192.svg',
+  './Java_インスタンス化.png',
+  './Java_クラスの継承.png',
+  './Java_オーバーライド.png',
+  './Java_抽象クラス.png',
+  './Java＿カプセル化.png',
+  './Java_コンポジション.png',
+  './Java_例外処理.png'
 ];
 
 self.addEventListener('install', e => {

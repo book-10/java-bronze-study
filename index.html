@@ -173,6 +173,26 @@
     .note-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--border); }
     .note-body.open { display: block; padding-top: 14px; }
     .note-content { font-size: 12.5px; line-height: 1.85; white-space: pre-wrap; color: var(--text); }
+
+    /* ===== IMAGE NOTES ===== */
+    #img-notes { background: var(--bg); overflow-y: auto; }
+    .img-notes-list { padding: 0 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+    .img-note-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .img-note-header { background: var(--surface3); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+    .img-note-num { background: var(--primary); color: white; font-size: 11px; font-weight: 800; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .img-note-title { font-size: 14px; font-weight: 700; }
+    .img-note-body { padding: 10px; text-align: center; }
+    .img-note-body img { max-width: 100%; border-radius: 8px; cursor: pointer; display: block; margin: 0 auto; }
+    .img-note-body img:active { opacity: 0.85; }
+    .img-tap-hint { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+    .img-note-comment { margin: 0 12px 6px; padding: 10px 14px; background: rgba(79,142,247,0.1); border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.6; }
+    .img-note-point { margin: 0 12px 12px; padding: 9px 14px; background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.6; color: #fbbf24; }
+
+    /* Lightbox */
+    #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; justify-content: center; align-items: center; padding: 16px; }
+    #lightbox.active { display: flex; }
+    #lightbox img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 8px; }
+    #lightbox-close { position: fixed; top: 12px; right: 12px; font-size: 28px; color: white; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); border-radius: 50%; }
   </style>
 </head>
 <body>
@@ -251,6 +271,14 @@
       <span class="menu-text">
         <div class="menu-title">学習ノート</div>
         <div class="menu-desc">型・演算子・API チートシート</div>
+      </span>
+      <span class="menu-arrow">›</span>
+    </button>
+    <button class="menu-item" onclick="showScreen('img-notes')">
+      <span class="menu-icon">🖼️</span>
+      <span class="menu-text">
+        <div class="menu-title">図解ノート</div>
+        <div class="menu-desc">OOP概念をイラストで理解</div>
       </span>
       <span class="menu-arrow">›</span>
     </button>
@@ -370,6 +398,115 @@
   <div class="notes-categories" id="notes-cats"></div>
   <div class="notes-list" id="notes-list"></div>
   <div class="bottom-pad"></div>
+</div>
+
+<!-- ===== IMAGE NOTES ===== -->
+<div id="img-notes" class="screen">
+  <div class="nav-bar">
+    <button class="nav-back" onclick="showScreen('home')">←</button>
+    <div class="nav-title">🖼️ 図解ノート</div>
+  </div>
+  <div class="img-notes-list">
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">1</div>
+        <div class="img-note-title">クラスのインスタンス化</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java_インスタンス化.png" alt="インスタンス化" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">設計図（クラス）から実体（インスタンス）を生み出す <code>new</code> キーワードがポイント。</p>
+      <p class="img-note-point">new を使うとヒープ領域に自分だけのオブジェクトが作られる。</p>
+    </div>
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">2</div>
+        <div class="img-note-title">クラスの継承 (extends)</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java_クラスの継承.png" alt="クラスの継承" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">似たクラスをまとめる技術。親の機能をそのまま引き継ぎ、楽に新しいクラスを作れる。</p>
+      <p class="img-note-point">extends キーワードを使う。共通処理は親クラスにまとめる。</p>
+    </div>
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">3</div>
+        <div class="img-note-title">メソッドのオーバーライド</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java_オーバーライド.png" alt="オーバーライド" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">親のメソッドを子クラスで上書き。同じメソッド名で異なる動きを実現する。</p>
+      <p class="img-note-point">@Override アノテーションを付けるとミスをコンパイル時に検出できる。</p>
+    </div>
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">4</div>
+        <div class="img-note-title">抽象クラス・インタフェース・多態性</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java_抽象クラス.png" alt="抽象クラス" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">Java設計の三種の神器。未完成のルール（抽象）、能力の追加（インタフェース）、同じ命令で違う動き（多態性）。</p>
+      <p class="img-note-point">abstract / interface / ポリモーフィズムを組み合わせると柔軟な設計になる。</p>
+    </div>
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">5</div>
+        <div class="img-note-title">カプセル化 (private + getter/setter)</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java＿カプセル化.png" alt="カプセル化" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">データを隠してメソッド経由でのみアクセスさせる。データの整合性を守る設計の基本。</p>
+      <p class="img-note-point">フィールドは private、外部へのアクセスは public な getter/setter で提供する。</p>
+    </div>
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">6</div>
+        <div class="img-note-title">コンポジション (has-a関係)</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java_コンポジション.png" alt="コンポジション" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">継承の代替。クラスを「持つ」ことで機能を組み合わせる。継承より柔軟な場合が多い。</p>
+      <p class="img-note-point">is-a関係なら継承、has-a関係ならコンポジション（フィールドとして持つ）を使う。</p>
+    </div>
+
+    <div class="img-note-card">
+      <div class="img-note-header">
+        <div class="img-note-num">7</div>
+        <div class="img-note-title">例外処理 (try-catch-finally)</div>
+      </div>
+      <div class="img-note-body">
+        <img src="Java_例外処理.png" alt="例外処理" onclick="openLightbox(this)">
+        <div class="img-tap-hint">タップで拡大</div>
+      </div>
+      <p class="img-note-comment">エラーが起きてもプログラムを止めずに対処する仕組み。finally は必ず実行される。</p>
+      <p class="img-note-point">checked例外はtry-catchまたはthrowsが必須。RuntimeExceptionは任意。</p>
+    </div>
+
+  </div>
+  <div class="bottom-pad"></div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox()">
+  <div id="lightbox-close">✕</div>
+  <img id="lightbox-img" src="" alt="">
 </div>
 
 <script src="questions.js"></script>
@@ -734,6 +871,17 @@ function toggleNote(id) {
 
 function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ===== LIGHTBOX =====
+function openLightbox(img) {
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 // ===== INIT =====
