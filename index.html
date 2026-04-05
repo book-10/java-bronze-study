@@ -959,21 +959,14 @@ function showHistory() {
 function renderHistory() {
   const body = document.getElementById('history-body');
 
-  if (stats.sessions.length === 0) {
-    body.innerHTML = `
-      <div class="history-empty">
-        <div class="history-empty-icon">📅</div>
-        <div style="font-size:16px;font-weight:700;margin-bottom:8px">まだ履歴がありません</div>
-        <div style="font-size:13px;line-height:1.6">問題を解くと、ここに<br>学習の記録が残ります！</div>
-      </div>`;
-    return;
-  }
-
-  // --- サマリー ---
-  const days = Object.keys(stats.daily).length;
-  const totalSessions = stats.sessions.length;
-  const bestPct = stats.sessions.reduce((m, s) => Math.max(m, s.pct), 0);
-  const recentAvg = stats.sessions.length > 0
+  // --- サマリー（過去データも含む cumulative stats を使う）---
+  const totalAnswered = stats.total || 0;
+  const totalCorrect  = stats.correct || 0;
+  const overallPct    = totalAnswered > 0 ? Math.round(totalCorrect / totalAnswered * 100) : 0;
+  const days          = Object.keys(stats.daily).length;
+  const bestPct       = stats.sessions.length > 0
+    ? stats.sessions.reduce((m, s) => Math.max(m, s.pct), 0) : 0;
+  const recentAvg     = stats.sessions.length > 0
     ? Math.round(stats.sessions.slice(0, 10).reduce((s, x) => s + x.pct, 0) / Math.min(10, stats.sessions.length))
     : 0;
 
@@ -1016,10 +1009,10 @@ function renderHistory() {
     <div class="history-section">
       <div class="history-section-title">累計サマリー</div>
       <div class="history-summary">
-        <div class="h-stat"><div class="h-stat-value">${days}</div><div class="h-stat-label">学習日数</div></div>
-        <div class="h-stat"><div class="h-stat-value">${totalSessions}</div><div class="h-stat-label">セッション数</div></div>
-        <div class="h-stat"><div class="h-stat-value">${recentAvg}%</div><div class="h-stat-label">直近10回 平均正答率</div></div>
-        <div class="h-stat"><div class="h-stat-value">${bestPct}%</div><div class="h-stat-label">最高正答率</div></div>
+        <div class="h-stat"><div class="h-stat-value">${totalAnswered}</div><div class="h-stat-label">累計解答数</div></div>
+        <div class="h-stat"><div class="h-stat-value">${overallPct}%</div><div class="h-stat-label">累計正答率</div></div>
+        <div class="h-stat"><div class="h-stat-value">${days > 0 ? days : '–'}</div><div class="h-stat-label">記録中の学習日数</div></div>
+        <div class="h-stat"><div class="h-stat-value">${recentAvg > 0 ? recentAvg + '%' : '–'}</div><div class="h-stat-label">直近10回 平均正答率</div></div>
       </div>
 
       <div class="history-section-title">過去60日の学習カレンダー</div>
@@ -1029,7 +1022,11 @@ function renderHistory() {
       </div>
 
       <div class="history-section-title">セッション履歴（最新${stats.sessions.length}件）</div>
-      ${sessionRows}
+      ${stats.sessions.length === 0
+        ? `<div style="text-align:center;padding:28px 16px;color:var(--text-muted);font-size:13px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--border)">
+            📝 問題を最後まで解くと<br>ここにセッションが記録されます
+           </div>`
+        : sessionRows}
     </div>
     <div class="bottom-pad"></div>`;
 }
