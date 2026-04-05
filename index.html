@@ -188,6 +188,39 @@
     .img-note-comment { margin: 0 12px 6px; padding: 10px 14px; background: rgba(79,142,247,0.1); border-left: 3px solid var(--primary); border-radius: 0 8px 8px 0; font-size: 12.5px; line-height: 1.6; }
     .img-note-point { margin: 0 12px 12px; padding: 9px 14px; background: rgba(245,158,11,0.1); border-left: 3px solid var(--warning); border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.6; color: #fbbf24; }
 
+    /* ===== HISTORY ===== */
+    #history { background: var(--bg); overflow-y: auto; }
+    .history-section { padding: 0 16px 20px; }
+    .history-section-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    /* Summary cards */
+    .history-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .h-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .h-stat-value { font-size: 24px; font-weight: 800; color: var(--primary); }
+    .h-stat-label { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+    /* Heatmap */
+    .heatmap-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 20px; }
+    .heatmap-title { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+    .heatmap-grid { display: flex; gap: 3px; flex-wrap: wrap; }
+    .hm-cell { width: 28px; height: 28px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 9px; color: rgba(255,255,255,0.5); flex-direction: column; cursor: default; }
+    .hm-cell .hm-day { font-size: 8px; opacity: 0.6; }
+    .hm-0 { background: var(--border); }
+    .hm-1 { background: rgba(79,142,247,0.35); }
+    .hm-2 { background: rgba(79,142,247,0.6); }
+    .hm-3 { background: rgba(79,142,247,0.85); }
+    .hm-4 { background: #4f8ef7; }
+    /* Session list */
+    .session-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 13px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .session-pct-circle { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+    .session-info { flex: 1; }
+    .session-date { font-size: 12px; font-weight: 700; }
+    .session-detail { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .session-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; flex-shrink: 0; }
+    .badge-great { background: rgba(34,197,94,0.2); color: var(--success); }
+    .badge-ok { background: rgba(245,158,11,0.2); color: var(--warning); }
+    .badge-ng { background: rgba(239,68,68,0.2); color: var(--danger); }
+    .history-empty { text-align: center; padding: 48px 24px; color: var(--text-muted); }
+    .history-empty-icon { font-size: 48px; margin-bottom: 12px; }
+
     /* Lightbox */
     #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; justify-content: center; align-items: center; padding: 16px; }
     #lightbox.active { display: flex; }
@@ -279,6 +312,14 @@
       <span class="menu-text">
         <div class="menu-title">図解ノート</div>
         <div class="menu-desc">OOP概念をイラストで理解</div>
+      </span>
+      <span class="menu-arrow">›</span>
+    </button>
+    <button class="menu-item" onclick="showHistory()">
+      <span class="menu-icon">📅</span>
+      <span class="menu-text">
+        <div class="menu-title">学習履歴</div>
+        <div class="menu-desc">カレンダーで進捗を確認</div>
       </span>
       <span class="menu-arrow">›</span>
     </button>
@@ -503,6 +544,15 @@
   <div class="bottom-pad"></div>
 </div>
 
+<!-- ===== HISTORY ===== -->
+<div id="history" class="screen">
+  <div class="nav-bar">
+    <button class="nav-back" onclick="showScreen('home')">←</button>
+    <div class="nav-title">📅 学習履歴</div>
+  </div>
+  <div id="history-body"></div>
+</div>
+
 <!-- Lightbox -->
 <div id="lightbox" onclick="closeLightbox()">
   <div id="lightbox-close">✕</div>
@@ -521,11 +571,37 @@ let fcIndex = 0, fcQuestions = [];
 // STATS
 let stats = JSON.parse(localStorage.getItem('jb_stats') || '{"total":0,"correct":0,"streak":0,"wrong":{}}');
 if (!stats.wrong) stats.wrong = {};
+if (!stats.daily) stats.daily = {};
+if (!stats.sessions) stats.sessions = [];
 let topicStats = JSON.parse(localStorage.getItem('jb_topic_stats') || '{}');
 
 function saveStats() {
   localStorage.setItem('jb_stats', JSON.stringify(stats));
   localStorage.setItem('jb_topic_stats', JSON.stringify(topicStats));
+}
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function saveSession(correct, total, elapsed) {
+  const key = todayKey();
+  // 日別集計
+  if (!stats.daily[key]) stats.daily[key] = { total: 0, correct: 0 };
+  stats.daily[key].total += total;
+  stats.daily[key].correct += correct;
+  // セッション一覧（最新50件まで）
+  const now = new Date();
+  stats.sessions.unshift({
+    date: key,
+    time: `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,
+    total, correct,
+    pct: Math.round(correct / total * 100),
+    elapsed
+  });
+  if (stats.sessions.length > 50) stats.sessions = stats.sessions.slice(0, 50);
+  saveStats();
 }
 
 // ===== UTILS =====
@@ -717,6 +793,7 @@ function showResult() {
   document.getElementById('r-wrong').textContent = total - correct;
   document.getElementById('r-pct').textContent = pct + '%';
   document.getElementById('r-time').textContent = elapsed < 60 ? elapsed + 's' : Math.floor(elapsed/60) + 'm' + (elapsed%60) + 's';
+  saveSession(correct, total, elapsed);
   showScreen('result');
 }
 
@@ -871,6 +948,90 @@ function toggleNote(id) {
 
 function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ===== HISTORY =====
+function showHistory() {
+  renderHistory();
+  showScreen('history');
+}
+
+function renderHistory() {
+  const body = document.getElementById('history-body');
+
+  if (stats.sessions.length === 0) {
+    body.innerHTML = `
+      <div class="history-empty">
+        <div class="history-empty-icon">📅</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:8px">まだ履歴がありません</div>
+        <div style="font-size:13px;line-height:1.6">問題を解くと、ここに<br>学習の記録が残ります！</div>
+      </div>`;
+    return;
+  }
+
+  // --- サマリー ---
+  const days = Object.keys(stats.daily).length;
+  const totalSessions = stats.sessions.length;
+  const bestPct = stats.sessions.reduce((m, s) => Math.max(m, s.pct), 0);
+  const recentAvg = stats.sessions.length > 0
+    ? Math.round(stats.sessions.slice(0, 10).reduce((s, x) => s + x.pct, 0) / Math.min(10, stats.sessions.length))
+    : 0;
+
+  // --- ヒートマップ（過去60日）---
+  const cells = [];
+  for (let i = 59; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const day = stats.daily[key];
+    const n = day ? day.total : 0;
+    const level = n === 0 ? 0 : n < 5 ? 1 : n < 10 ? 2 : n < 20 ? 3 : 4;
+    const label = `${d.getMonth()+1}/${d.getDate()}`;
+    const pctTip = day ? Math.round(day.correct/day.total*100) + '%' : '';
+    cells.push(`<div class="hm-cell hm-${level}" title="${label}${n>0?' '+n+'問 '+pctTip:''}">
+      <span>${n > 0 ? n : ''}</span>
+      <span class="hm-day">${d.getDate()}</span>
+    </div>`);
+  }
+
+  // --- セッション一覧 ---
+  const sessionRows = stats.sessions.map(s => {
+    const pct = s.pct;
+    const col = pct >= 80 ? 'var(--success)' : pct >= 60 ? 'var(--warning)' : 'var(--danger)';
+    const bg  = pct >= 80 ? 'rgba(34,197,94,0.15)' : pct >= 60 ? 'rgba(245,158,11,0.15)' : 'rgba(239,68,68,0.15)';
+    const badgeCls = pct >= 80 ? 'badge-great' : pct >= 60 ? 'badge-ok' : 'badge-ng';
+    const badgeTxt = pct >= 80 ? '合格圏' : pct >= 60 ? 'もう少し' : '要復習';
+    const elapsedStr = s.elapsed < 60 ? s.elapsed + 's' : Math.floor(s.elapsed/60) + 'm' + (s.elapsed%60) + 's';
+    const dateDisp = s.date.replace(/^\d{4}-/, '').replace('-', '/');
+    return `<div class="session-item">
+      <div class="session-pct-circle" style="background:${bg};color:${col}">${pct}%</div>
+      <div class="session-info">
+        <div class="session-date">${dateDisp} ${s.time || ''}</div>
+        <div class="session-detail">${s.correct}/${s.total}問正解 · ${elapsedStr}</div>
+      </div>
+      <span class="session-badge ${badgeCls}">${badgeTxt}</span>
+    </div>`;
+  }).join('');
+
+  body.innerHTML = `
+    <div class="history-section">
+      <div class="history-section-title">累計サマリー</div>
+      <div class="history-summary">
+        <div class="h-stat"><div class="h-stat-value">${days}</div><div class="h-stat-label">学習日数</div></div>
+        <div class="h-stat"><div class="h-stat-value">${totalSessions}</div><div class="h-stat-label">セッション数</div></div>
+        <div class="h-stat"><div class="h-stat-value">${recentAvg}%</div><div class="h-stat-label">直近10回 平均正答率</div></div>
+        <div class="h-stat"><div class="h-stat-value">${bestPct}%</div><div class="h-stat-label">最高正答率</div></div>
+      </div>
+
+      <div class="history-section-title">過去60日の学習カレンダー</div>
+      <div class="heatmap-wrap">
+        <div class="heatmap-title">■ 薄い=少ない  ■ 濃い=多い（数字は解いた問題数）</div>
+        <div class="heatmap-grid">${cells.join('')}</div>
+      </div>
+
+      <div class="history-section-title">セッション履歴（最新${stats.sessions.length}件）</div>
+      ${sessionRows}
+    </div>
+    <div class="bottom-pad"></div>`;
 }
 
 // ===== LIGHTBOX =====
