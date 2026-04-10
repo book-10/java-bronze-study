@@ -222,10 +222,10 @@
     .history-empty-icon { font-size: 48px; margin-bottom: 12px; }
 
     /* Lightbox */
-    #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9999; justify-content: center; align-items: center; padding: 16px; }
-    #lightbox.active { display: flex; }
-    #lightbox img { max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 8px; }
-    #lightbox-close { position: fixed; top: 12px; right: 12px; font-size: 28px; color: white; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); border-radius: 50%; }
+    #lightbox { display: none; position: fixed; inset: 0; width: 100vw; height: 100dvh; background: #000; z-index: 9999; overflow: auto; -webkit-overflow-scrolling: touch; }
+    #lightbox.active { display: flex; justify-content: center; align-items: center; }
+    #lightbox img { width: 100vw; height: auto; object-fit: contain; touch-action: pinch-zoom; display: block; }
+    #lightbox-close { position: fixed; top: env(safe-area-inset-top, 12px); right: 12px; font-size: 24px; color: white; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); border-radius: 50%; z-index: 10000; }
   </style>
 </head>
 <body>
@@ -554,8 +554,8 @@
 </div>
 
 <!-- Lightbox -->
-<div id="lightbox" onclick="closeLightbox()">
-  <div id="lightbox-close">✕</div>
+<div id="lightbox">
+  <div id="lightbox-close" onclick="closeLightbox()">✕</div>
   <img id="lightbox-img" src="" alt="">
 </div>
 
@@ -1033,7 +1033,8 @@ function renderHistory() {
 
 // ===== LIGHTBOX =====
 function openLightbox(img) {
-  document.getElementById('lightbox-img').src = img.src;
+  const lbImg = document.getElementById('lightbox-img');
+  lbImg.src = img.getAttribute('src');
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
