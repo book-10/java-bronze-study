@@ -224,7 +224,7 @@
     /* Lightbox */
     #lightbox { display: none; position: fixed; inset: 0; width: 100vw; height: 100dvh; background: #000; z-index: 9999; overflow: auto; -webkit-overflow-scrolling: touch; }
     #lightbox.active { display: flex; justify-content: center; align-items: center; }
-    #lightbox img { width: 100vw; height: auto; object-fit: contain; touch-action: pinch-zoom; display: block; }
+    #lightbox img { width: 100vw; height: auto; object-fit: contain; display: block; transform-origin: center center; will-change: transform; touch-action: none; }
     #lightbox-close { position: fixed; top: env(safe-area-inset-top, 12px); right: 12px; font-size: 24px; color: white; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); border-radius: 50%; z-index: 10000; }
   </style>
 </head>
@@ -1032,19 +1032,80 @@ function renderHistory() {
 }
 
 // ===== LIGHTBOX =====
+let lbScale = 1, lbMinScale = 1, lbMaxScale = 5;
+let lbPanX = 0, lbPanY = 0;
+let lbPinchDist0 = 0, lbScale0 = 1;
+let lbPanX0 = 0, lbPanY0 = 0, lbTouch0X = 0, lbTouch0Y = 0;
+
+function lbApplyTransform() {
+  const img = document.getElementById('lightbox-img');
+  img.style.transform = `translate(${lbPanX}px, ${lbPanY}px) scale(${lbScale})`;
+}
+
+function lbPinchDist(t) {
+  return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+}
+
+function setupLightboxTouch() {
+  const lb = document.getElementById('lightbox');
+
+  lb.addEventListener('touchstart', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      lbPinchDist0 = lbPinchDist(e.touches);
+      lbScale0 = lbScale;
+    } else if (e.touches.length === 1 && lbScale > 1) {
+      e.preventDefault();
+      lbPanX0 = lbPanX;
+      lbPanY0 = lbPanY;
+      lbTouch0X = e.touches[0].clientX;
+      lbTouch0Y = e.touches[0].clientY;
+    }
+  }, { passive: false });
+
+  lb.addEventListener('touchmove', e => {
+    if (e.touches.length === 2) {
+      e.preventDefault();
+      const dist = lbPinchDist(e.touches);
+      lbScale = Math.min(lbMaxScale, Math.max(lbMinScale, lbScale0 * (dist / lbPinchDist0)));
+      if (lbScale <= lbMinScale) { lbPanX = 0; lbPanY = 0; }
+      lbApplyTransform();
+    } else if (e.touches.length === 1 && lbScale > 1) {
+      e.preventDefault();
+      lbPanX = lbPanX0 + (e.touches[0].clientX - lbTouch0X);
+      lbPanY = lbPanY0 + (e.touches[0].clientY - lbTouch0Y);
+      lbApplyTransform();
+    }
+  }, { passive: false });
+
+  lb.addEventListener('touchend', e => {
+    if (lbScale < lbMinScale) {
+      lbScale = lbMinScale;
+      lbPanX = 0;
+      lbPanY = 0;
+      lbApplyTransform();
+    }
+  });
+}
+
 function openLightbox(img) {
   const lbImg = document.getElementById('lightbox-img');
   lbImg.src = img.getAttribute('src');
+  lbScale = 1; lbPanX = 0; lbPanY = 0;
+  lbImg.style.transform = '';
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('active');
   document.body.style.overflow = '';
+  lbScale = 1; lbPanX = 0; lbPanY = 0;
+  document.getElementById('lightbox-img').style.transform = '';
 }
 
 // ===== INIT =====
 updateHome();
+setupLightboxTouch();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});

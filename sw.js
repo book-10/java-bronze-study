@@ -1,4 +1,4 @@
-const CACHE_NAME = 'java-bronze-v4';
+const CACHE_NAME = 'java-bronze-v5';
 const FILES = [
   './',
   './index.html',
